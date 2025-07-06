@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Product
+from .models import Product , Contact
 # Create your views here.
 
 def index(request):
@@ -19,7 +19,14 @@ def product_detail(request, product_id):
 def about(request):
     return render(request,'shop/about.html')
 def contact(request):
-    return render(request,'shop/test.html')
+    if request.method=="POST":
+        name=request.POST.get('name','')
+        email=request.POST.get('email','')
+        phone=request.POST.get('phone','')
+        message=request.POST.get('message','')
+        contact=Contact(name=name,email=email,phone=phone,message=message)
+        contact.save()
+    return render(request,'shop/contact.html')
 def search(request):
     return HttpResponse("search page")
 def track(request):
