@@ -24,3 +24,13 @@ class Contact(models.Model):
     
     def __str__(self):
         return self.name
+    
+class User(models.Model):
+    user_id=models.AutoField(primary_key=True)
+    name=models.CharField(max_length=70)
+    email=models.CharField(max_length=70)
+    phone=models.CharField(default=0)
+    password=models.CharField(max_length=500,default="")
+    role=models.CharField(max_length=10,default="Student")
+    def __str__(self):
+        return self.name
