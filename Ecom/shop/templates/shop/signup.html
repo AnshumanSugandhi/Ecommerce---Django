@@ -1,0 +1,563 @@
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PlacementPro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 420px;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px auto;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .icon svg {
+            fill: #fff;
+            width: 35px;
+            height: 35px;
+        }
+        
+        h2 {
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .messages {
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .role-label {
+            text-align: left;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .role-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .role-btn {
+            flex: 1;
+            padding: 12px 8px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            background: #fff;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .role-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .role-btn.selected {
+            border: 2px solid #667eea;
+            color: #667eea;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .form-group input::placeholder {
+            color: #999;
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .form-options label {
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .form-options input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+        
+        .form-options a {
+            color: #667eea;
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .form-options a:hover {
+            color: #5a67d8;
+            text-decoration: underline;
+        }
+        
+        .sign-up-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 0;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sign-up-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .sign-up-btn:active {
+            transform: translateY(0);
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #999;
+            margin: 25px 0 15px 0;
+            font-size: 14px;
+        }
+        
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        
+        .divider:not(:empty)::before {
+            margin-right: 15px;
+        }
+        
+        .divider:not(:empty)::after {
+            margin-left: 15px;
+        }
+        
+        .login-link {
+            margin-top: 20px;
+            font-size: 15px;
+            color: #666;
+        }
+        
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        
+        .login-link a:hover {
+            color: #5a67d8;
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            color: #38a169;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* Social Login Buttons */
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            background: #fff;
+            color: #333;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .social-btn:active {
+            transform: translateY(0);
+        }
+        
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        
+        .google-btn {
+            border-color: #4285F4;
+            color: #4285F4;
+        }
+        
+        .google-btn:hover {
+            background: #f8f9ff;
+            border-color: #3367d6;
+            color: #3367d6;
+        }
+        
+        .linkedin-btn {
+            border-color: #0077b5;
+            color: #0077b5;
+        }
+        
+        .linkedin-btn:hover {
+            background: #f0f8ff;
+            border-color: #005885;
+            color: #005885;
+        }
+        
+        .github-btn {
+            border-color: #333;
+            color: #333;
+        }
+        
+        .github-btn:hover {
+            background: #f8f9fa;
+            border-color: #24292e;
+            color: #24292e;
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                width: 100%;
+                padding: 30px 20px;
+            }
+            
+            .role-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+    <script>
+        function selectRole(role) {
+            document.getElementById('role').value = role;
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.getElementById('btn-' + role).classList.add('selected');
+        }
+        
+        function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            
+            let isValid = true;
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(msg => msg.style.display = 'none');
+            
+            if (name.length < 2) {
+                showError('name', 'Name must be at least 2 characters long');
+                isValid = false;
+            }
+            
+            if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                showError('email', 'Please enter a valid email address');
+                isValid = false;
+            }
+            
+            if (phone && !phone.match(/^[\+]?[1-9][\d]{0,15}$/)) {
+                showError('phone', 'Please enter a valid phone number');
+                isValid = false;
+            }
+            
+            if (password.length < 6) {
+                showError('password', 'Password must be at least 6 characters long');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = field.parentNode.querySelector('.error-message');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+        }
+        
+        // Add input event listeners for real-time validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="password"]');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    const fieldId = this.id;
+                    const value = this.value.trim();
+                    
+                    // Clear previous error
+                    const errorDiv = this.parentNode.querySelector('.error-message');
+                    if (errorDiv) errorDiv.style.display = 'none';
+                    
+                    // Validate based on field type
+                    if (fieldId === 'name' && value.length > 0 && value.length < 2) {
+                        showError(fieldId, 'Name must be at least 2 characters long');
+                    } else if (fieldId === 'email' && value.length > 0 && !value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                        showError(fieldId, 'Please enter a valid email address');
+                    } else if (fieldId === 'phone' && value.length > 0 && !value.match(/^[\+]?[1-9][\d]{0,15}$/)) {
+                        showError(fieldId, 'Please enter a valid phone number');
+                    } else if (fieldId === 'password' && value.length > 0 && value.length < 6) {
+                        showError(fieldId, 'Password must be at least 6 characters long');
+                    }
+                });
+            });
+        });
+        
+        function socialLogin(provider) {
+            // You can implement the actual OAuth flow here
+            // For now, this is a placeholder that shows which provider was clicked
+            console.log('Social login clicked:', provider);
+            
+            // Example implementation:
+            // switch(provider) {
+            //     case 'google':
+            //         window.location.href = '/auth/google/';
+            //         break;
+            //     case 'linkedin':
+            //         window.location.href = '/auth/linkedin/';
+            //         break;
+            //     case 'github':
+            //         window.location.href = '/auth/github/';
+            //         break;
+            // }
+            
+            // Show a temporary message
+            alert(`Social login with ${provider} is not yet implemented. Please use the regular signup form.`);
+        }
+    </script>
+</head>
+<body>
+    <div class="card">
+        <div class="icon">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+        </div>
+        <h2>Create Account</h2>
+        <div class="subtitle">Join PlacementPro and start your journey today</div>
+        
+        <!-- Django Messages -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <form action="{% url 'shop:signup' %}" method="post" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <input type="hidden" name="role" id="role" value="Student">
+            
+            <div class="role-label">Sign up as</div>
+            <div class="role-group">
+                <button type="button" class="role-btn selected" id="btn-Student" onclick="selectRole('Student')">Student</button>
+                <button type="button" class="role-btn" id="btn-Recruiter" onclick="selectRole('Recruiter')">Recruiter</button>
+                <button type="button" class="role-btn" id="btn-Admin" onclick="selectRole('Admin')">Admin</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                <div class="error-message"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                <div class="error-message"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+                <div class="error-message"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                <div class="error-message"></div>
+            </div>
+            
+            <div class="form-options">
+                <label>
+                    <input type="checkbox" name="terms" required> I agree to the Terms & Conditions
+                </label>
+            </div>
+            
+            <button type="submit" class="sign-up-btn">Create Account</button>
+        </form>
+        
+        <div class="divider">Or continue with</div>
+        
+        <div class="login-link">
+            Already have an account? <a href="{% url 'shop:login' %}">Sign In</a>
+        </div>
+    </div>
+</body>
+</html>

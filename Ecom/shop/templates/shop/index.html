@@ -1,0 +1,72 @@
+{% extends 'shop/basic.html' %}
+{% block title %}
+Dmart |
+{% endblock %} 
+{% block css %}
+    <style>
+      .img {
+        height: 20vh;
+      }
+      .card-img-top {
+        width: 100%;
+        height: 200px;         
+        object-fit: cover;    
+      }
+    </style>
+{% endblock %}
+
+{% block body %}
+  {% load static %}
+  
+    <div class="container my-4">
+      {% for prod in allprods %}
+      <!-- Displaying Category nameee -->
+        <h1 class="my-4">{{ prod.1 }}</h1> 
+        <div class="row g-4">
+          {% for product in prod.0 %}
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100">
+              <img src="{{ product.image.url }}" class="card-img-top" alt="{{product.product_name}}" />
+              <div class="card-body">
+                <h5 class="card-title">{{product.product_name}}</h5>
+                <!-- Product Description -->
+                <p class="card-text">{{product.prodect_desc|slice:':90'}}...</p>
+                <button id="{{product.id}}" class="btn btn-primary cart">Add to Cart </button> 
+                <button id="buy{{product.id}}" class="btn btn-primary cart">Buy Now </button>
+                <a href="/shop/products/{{product.id}}" class="btn btn-secondary">View Details</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+{% endblock %}
+
+{% block js %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      // console.log("Working!!");
+      let cart = JSON.parse(localStorage.getItem('cart'));
+      if (cart == null) {
+          cart = {};
+      }
+      document.getElementById('cart').innerHTML = Object.keys(cart).length;
+      $('.cart').click(function(){
+        // console.log("Clicked");
+        var idstr= this.id.toString();
+        // console.log(idstr);
+        if(cart[idstr] != undefined){
+          cart[idstr] = cart[idstr] + 1;
+        }
+        else{
+          cart[idstr] = 1;
+        }
+        console.log(cart);
+        localStorage.setItem('cart',JSON.stringify(cart));
+      })
+      $('#popcart').popover()
+      document.getElementById("popcart").setAttribute("data-bs-content","<h5>Cart for your items in my shopping cart<h5><div class='row'>");
+    </script>
+{% endblock %}
+

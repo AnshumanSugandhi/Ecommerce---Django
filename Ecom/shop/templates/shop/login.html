@@ -1,0 +1,243 @@
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+            padding: 40px 32px 32px 32px;
+            width: 370px;
+            text-align: center;
+        }
+        .icon {
+            background: #2563eb;
+            border-radius: 16px;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px auto;
+        }
+        .icon svg {
+            fill: #fff;
+            width: 32px;
+            height: 32px;
+        }
+        h2 {
+            margin: 0 0 8px 0;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .subtitle {
+            color: #555;
+            margin-bottom: 24px;
+        }
+        .form-group {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 15px;
+            color: #222;
+        }
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-bottom: 0;
+            box-sizing: border-box;
+        }
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+        .form-options label {
+            font-size: 14px;
+            color: #444;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .form-options a {
+            color: #2563eb;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .form-options a:hover {
+            text-decoration: underline;
+        }
+        .sign-in-btn {
+            width: 100%;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 0;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 22px;
+            transition: background 0.2s;
+        }
+        .sign-in-btn:hover {
+            background: #1746a2;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #aaa;
+            margin: 18px 0 10px 0;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .divider:not(:empty)::before {
+            margin-right: .75em;
+        }
+        .divider:not(:empty)::after {
+            margin-left: .75em;
+        }
+        .signup-link {
+            margin-top: 18px;
+            font-size: 14px;
+        }
+        .signup-link a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        .social-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px; /* Adjust as needed */
+            height: 40px; /* Adjust as needed */
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            border: 1px solid #e5e7eb;
+            color: #333;
+            text-decoration: none;
+        }
+        .social-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        .google-btn {
+            background-color: #4285F4;
+            color: #fff;
+            border-color: #4285F4;
+        }
+        .github-btn {
+            background-color: #333;
+            color: #fff;
+            border-color: #333;
+        }
+        .linkedin-btn {
+            background-color: #0077b5;
+            color: #fff;
+            border-color: #0077b5;
+        }
+        .social-icon {
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+        .social-icon svg {
+            fill: #fff;
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon">
+            <!-- Book SVG icon -->
+            <svg viewBox="0 0 24 24"><path d="M6 4v16c0 .55.45 1 1 1h13v-2H8V4H6zm2 0v14h11V4H8zm-4 2v14c0 1.1.9 2 2 2h13v-2H6V6H4z"/></svg>
+        </div>
+        <h2>Welcome Back</h2>
+        <div class="subtitle">Sign in to your PlacementPro account</div>
+        <form method="post" autocomplete="off">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="form-options">
+                <label><input type="checkbox" name="remember"> Remember me</label>
+                <a href="#">Forgot password?</a>
+            </div>
+            <button type="submit" class="sign-in-btn">Sign In</button>
+            <div class="divider">Or continue with</div>
+            <div class="social-buttons">
+                <a href="{% provider_login_url 'google' %}" class="social-btn google-btn">
+                    <span class="social-icon">
+                        <!-- Google SVG -->
+                        <svg viewBox="0 0 24 24" width="20" height="20"><g><path fill="#4285F4" d="M21.805 10.023h-9.765v3.977h5.617c-.242 1.242-1.484 3.648-5.617 3.648-3.375 0-6.125-2.789-6.125-6.227s2.75-6.227 6.125-6.227c1.922 0 3.211.82 3.953 1.523l2.703-2.633c-1.703-1.57-3.891-2.539-6.656-2.539-5.523 0-10 4.477-10 10s4.477 10 10 10c5.742 0 9.547-4.016 9.547-9.664 0-.648-.07-1.141-.156-1.586z"/><path fill="#34A853" d="M3.17 7.548l3.281 2.406c.891-1.68 2.531-2.93 4.549-2.93 1.391 0 2.617.477 3.594 1.406l2.703-2.633c-1.703-1.57-3.891-2.539-6.656-2.539-3.516 0-6.484 2.344-7.547 5.547z"/><path fill="#FBBC05" d="M12 22c2.672 0 4.922-.883 6.563-2.406l-3.047-2.492c-.844.57-1.922.914-3.516.914-2.789 0-5.156-1.883-6.008-4.414l-3.281 2.547c1.547 3.094 4.797 5.851 9.289 5.851z"/><path fill="#EA4335" d="M21.805 10.023h-9.765v3.977h5.617c-.242 1.242-1.484 3.648-5.617 3.648-3.375 0-6.125-2.789-6.125-6.227s2.75-6.227 6.125-6.227c1.922 0 3.211.82 3.953 1.523l2.703-2.633c-1.703-1.57-3.891-2.539-6.656-2.539-5.523 0-10 4.477-10 10s4.477 10 10 10c5.742 0 9.547-4.016 9.547-9.664 0-.648-.07-1.141-.156-1.586z" opacity=".1"/></g></svg>
+                    </span>
+                    Login with Google
+                </a>
+                <a href="{% provider_login_url 'github' %}" class="social-btn github-btn">
+                    <span class="social-icon">
+                        <!-- GitHub SVG -->
+                        <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#333" d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.461-1.11-1.461-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.091-.647.35-1.088.636-1.339-2.221-.253-4.555-1.112-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.566 4.944.359.309.678.919.678 1.852 0 1.336-.012 2.417-.012 2.747 0 .267.18.578.688.48C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg>
+                    </span>
+                    Login with GitHub
+                </a>
+                <a href="/" class="social-btn linkedin-btn">
+                    <span class="social-icon">
+                        <!-- LinkedIn SVG -->
+                        <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#0077b5" d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-9h3v9zm-1.5-10.28c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.79 1.75 1.75-.78 1.75-1.75 1.75zm13.5 10.28h-3v-4.5c0-1.08-.02-2.47-1.5-2.47-1.5 0-1.73 1.17-1.73 2.39v4.58h-3v-9h2.89v1.23h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.59v4.72z"/></svg>
+                    </span>
+                    Login with LinkedIn
+                </a>
+            </div>
+        </form>
+        <div class="signup-link">
+            Don't have an account? <a href="/shop/signup">Sign Up</a>
+        </div>
+    </div>
+</body>
+</html> 
